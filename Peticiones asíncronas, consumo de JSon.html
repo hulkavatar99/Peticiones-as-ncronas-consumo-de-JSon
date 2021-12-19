@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FETCH</title>
+</head>
+
+<body>
+
+  <h2>BANDERAS API FETCH</h2>
+  <div id="demo">
+    <input type="text" name="" id="search" placeholder="Bandera" required>
+    <button type="button" onclick="loadFetch()">Buscar</button>
+    <br><br>
+    <label for="">Capital</label>
+
+    <input type="text" id="capital" disabled>
+    <br><br>
+    <label for="">Continente</label>
+    <input type="text" id="continent" disabled>
+
+    <br><br><br>
+    <button type="button" onclick="buscarImg()">Buscando bandera</button>
+    <br><br><br>
+    <img width="600px" height="400px" id="image">
+  </div>
+
+  <script>
+    let country = ""
+    var img = document.getElementById("image")
+    //usando fetch, consumir una api de paises
+
+    function loadFetch() {
+
+      var pais = document.getElementById("search").value
+      var pais = document.getElementById("search").value
+      var capital = document.getElementById("capital")
+      var continent = document.getElementById("continent")
+
+      if (pais === "") {
+        alert("Ingrese algun pais por favor")
+      } else {
+
+        fetch("https://restcountries.com/v3.1/name/" + pais).then((response) => {
+          if(!response.ok){
+            alert("Valide su informacion")
+
+          }else{
+
+             return response.json()
+          }
+         
+
+        }).then((data) => {
+          console.log(data[0])
+          capital.value = data[0].capital
+          continente.value = data[0].continents
+          country = data[0].altSpellings[0]
+        })
+
+      }
+
+    }
+
+
+    function buscarImg() {
+
+      if (country != "") {
+        var link = "https://flagcdn.com/256x192/"+country.toLowerCase()+".png"
+        console.log(country.toLowerCase())
+        fetch(link,).then( (response) => {
+         
+          return response.blob()
+        
+
+        }).then((datos) =>{
+
+            console.log(datos)
+            img.setAttribute("src", URL.createObjectURL(datos))
+            img.setAttribute("alt", country)
+
+        })
+
+
+      }
+
+
+
+    }
+  </script>
+
+</body>
+
+</html>
